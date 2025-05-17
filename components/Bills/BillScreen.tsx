@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import {
-    KeyboardAvoidingView,
-    Platform,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    View,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  View,
 } from 'react-native';
 import Colors from '../../constants/Colors';
-import InfoSection from '../Home/InfoSection';
 import WelcomeBanner from '../Home/WelcomeBanner';
 import BillDetail from './BillDetail';
 import BillList from './BillList';
@@ -108,8 +107,6 @@ const BillsScreen: React.FC = () => {
               <BillDetail billId={selectedBillId} items={mockItemsByBill[selectedBillId]} />
             )}
           </View>
-
-          <InfoSection />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

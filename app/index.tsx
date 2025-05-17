@@ -1,25 +1,17 @@
-import React from 'react';
+// app/index.tsx
+import MyTabs from '@/components/common/Header';
 import { StyleSheet, View } from 'react-native';
-import HomeScreen from '../components/Home/HomeScreen';
-import MenuScreen from '../components/Menu/MenuScreen';
-import OrderScreen from '../components/Order/OrderScreen';
-import CartScreen from '../components/Cart/CartScreen';
-import BillScreen from '../components/Bills/BillScreen';
 
-
-
-
-
-export default function Index() {
-  return (
-    <View style={styles.container}>
-      < HomeScreen/>
-    </View>
-  );
+export default function HomePage() {
+    return (
+        <View style={styles.container}>
+            <MyTabs />
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+    container: {
+        flex: 1,
+    },
 });

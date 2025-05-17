@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import Colors from '../../constants/Colors';
-import InfoSection from '../Home/InfoSection'; // import InfoSection
 import WelcomeBanner from '../Home/WelcomeBanner';
 import CartList from './CartList';
 import CartSummary from './CartSummary';
@@ -48,8 +47,6 @@ const CartScreen: React.FC = () => {
 
         <CartSummary items={cartItems} />
       </ScrollView>
-
-      <InfoSection />
     </SafeAreaView>
   );
 };

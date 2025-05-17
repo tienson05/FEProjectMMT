@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Colors from '../../constants/Colors';
-import InfoSection from '../Home/InfoSection'; // import InfoSection
 import WelcomeBanner from '../Home/WelcomeBanner';
 
 const dishData = {
@@ -23,8 +22,8 @@ const ProductOrderScreen = () => {
   };
 
   return (
-    <ScrollView 
-      contentContainerStyle={styles.scrollContentContainer} 
+    <ScrollView
+      contentContainerStyle={styles.scrollContentContainer}
       style={styles.container}
     >
       {/* Bọc toàn bộ nội dung trong 1 View chính với flex:1 và justifyContent: space-between */}
@@ -64,9 +63,6 @@ const ProductOrderScreen = () => {
 
           <View style={styles.emptySpace} />
         </View>
-
-        {/* InfoSection luôn ở dưới cùng */}
-        <InfoSection />
       </View>
     </ScrollView>
   );

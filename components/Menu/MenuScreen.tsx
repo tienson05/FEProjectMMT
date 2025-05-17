@@ -1,7 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import Colors from '../../constants/Colors';
-import InfoSection from '../Home/InfoSection'; // import InfoSection
 import WelcomeBanner from '../Home/WelcomeBanner';
 import CategoryList from './CategoryList';
 
@@ -75,7 +74,6 @@ const MenuScreen = () => {
           <CategoryList categories={sampleData} />
         </View>
       </View>
-            <InfoSection />
     </ScrollView>
   );
 };
