@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ActivityIndicator, Alert, StyleSheet, Text, View } from 'react-native';
+import API_IP from '../../config';
 import LoginForm from './LoginForm';
 
 interface AuthScreenProps {
@@ -14,8 +15,8 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess }) => {
 
         try {
             // Gọi API backend để đăng nhập, ví dụ POST /api/login
-            console.log("dda vao")
-            const response = await fetch('http://192.168.1.202:3000/api/login', {
+            console.warn("dda vao")
+            const response = await fetch(`${API_IP}/api/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -35,7 +36,7 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess }) => {
 
             // Lấy role từ dữ liệu trả về
             const role = data.role == 1 ? 'admin' : 'casher';
-
+            console.log('role: ', role)
             // Gọi callback thông báo đăng nhập thành công với role
             onLoginSuccess(role);
         } catch (error) {
