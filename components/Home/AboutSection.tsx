@@ -16,8 +16,7 @@ const AboutSection = () => {
       <View style={styles.textContainer}>
         <Text style={styles.heading}>Giới Thiệu</Text>
         <Text style={styles.description}>
-          Bước chân vào một quán cà phê, bạn không chỉ tìm đến một tách đồ uống thơm ngon mà còn lạc vào một không gian riêng biệt, nơi thời gian dường như chậm lại. Đó có thể là một góc nhỏ ấm cúng với ánh đèn vàng dịu nhẹ, những bản nhạc du dương và mùi cà phê thoang thoảng đánh thức mọi giác quan. Hoặc một không gian hiện đại, năng động với những câu chuyện rôm rả và tiếng máy pha cà phê rộn ràng. Mỗi quán cà phê mang một cá tính riêng, một câu chuyện để kể, nơi bạn có thể tìm thấy sự thư thái, cảm hứng làm việc, hay đơn giản là một khoảnh khắc lắng đọng giữa nhịp sống hối hả.
-        </Text>
+Thèm một không gian thư thái, ấm cúng hay năng động để tận hưởng tách cà phê thơm lừng và "chậm" lại một chút giữa bộn bề? Ghé [Tên quán cà phê] nhé! Chúng tôi có cả hai, và còn nhiều hơn thế nữa để bạn khám phá.  </Text>
         <Text style={styles.description}>
           Địa chỉ: 123 Đường Nguyễn Lương Bằng, Quận 1, TP.HCM
         </Text>

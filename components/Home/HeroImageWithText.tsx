@@ -8,7 +8,7 @@ const HeroImageWithText = () => {
       style={styles.hero}
       imageStyle={styles.imageStyle}
     >
-      <Text style={styles.text}>Cà Phê Việt – Hương vị hoài niệm</Text>
+      <Text style={styles.text}>Cà Phê – Hương vị hoài niệm</Text>
     </ImageBackground>
   );
 };
@@ -16,7 +16,7 @@ const HeroImageWithText = () => {
 const styles = StyleSheet.create({
   hero: {
     width: '100%',
-    height: Dimensions.get('window').width * 0.4,
+    height: Dimensions.get('window').width * 0.8,
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 20,

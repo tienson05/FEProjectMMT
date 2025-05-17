@@ -8,7 +8,6 @@ import {
     View,
 } from 'react-native';
 import Colors from '../../constants/Colors';
-import InfoSection from '../Home/InfoSection';
 import WelcomeBanner from '../Home/WelcomeBanner';
 import BillDetail from './BillDetail';
 import BillList from './BillList';
@@ -25,7 +24,7 @@ interface BillItem {
   price: number;
 }
 
-// Mở rộng dữ liệu cho test scroll thoải mái
+// Mock data cho danh sách hóa đơn
 const mockBills: Bill[] = [
   { id: 'B001', createdBy: 'Nguyễn Văn A', createdAt: '2025-05-17 10:30' },
   { id: 'B002', createdBy: 'Trần Thị B', createdAt: '2025-05-16 15:20' },
@@ -44,6 +43,7 @@ const mockBills: Bill[] = [
   { id: 'B015', createdBy: 'Nguyễn Văn O', createdAt: '2025-05-03 11:20' },
 ];
 
+// Mock data chi tiết các món theo hóa đơn
 const mockItemsByBill: Record<string, BillItem[]> = {
   B001: [
     { name: 'Cà phê sữa', quantity: 2, price: 35000 },
@@ -102,14 +102,14 @@ const BillsScreen: React.FC = () => {
           <WelcomeBanner />
 
           <View style={styles.content}>
+            {/* Danh sách hóa đơn */}
             <BillList bills={mockBills} onSelect={setSelectedBillId} />
 
+            {/* Hiển thị chi tiết đơn hàng nếu đã chọn */}
             {selectedBillId && (
               <BillDetail billId={selectedBillId} items={mockItemsByBill[selectedBillId]} />
             )}
           </View>
-
-          <InfoSection />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

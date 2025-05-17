@@ -13,7 +13,7 @@ import BillScreen from '../components/Bills/BillScreen';
 export default function Index() {
   return (
     <View style={styles.container}>
-      < HomeScreen/>
+      < BillScreen/>
     </View>
   );
 }

@@ -1,6 +1,9 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
 import Colors from '../../constants/Colors';
+
+const screenWidth = Dimensions.get('window').width;
+const cardWidth = screenWidth / 3 - 20; // trừ padding/margin cho vừa 3 ảnh
 
 const DishCard = ({ dish }: any) => {
   return (
@@ -14,8 +17,8 @@ const DishCard = ({ dish }: any) => {
 
 const styles = StyleSheet.create({
   card: {
-    width: 150,
-    marginRight: 15,
+    width: cardWidth,
+    marginRight: 20,
     backgroundColor: Colors.white,
     borderRadius: 10,
     overflow: 'hidden',
@@ -23,19 +26,20 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 150,
+    height: cardWidth, // hình vuông cho đều đẹp
+    resizeMode: 'cover', // giữ bố cục ảnh ổn
   },
   name: {
-    fontSize: 16,
+    fontSize: 13,
     fontWeight: '600',
     color: Colors.dark,
-    marginTop: 8,
+    marginTop: 6,
     textAlign: 'center',
   },
   price: {
-    fontSize: 14,
+    fontSize: 12,
     color: Colors.accent,
-    marginBottom: 10,
+    marginBottom: 8,
   },
 });
 
