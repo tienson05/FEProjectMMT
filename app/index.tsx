@@ -1,0 +1,1 @@
+// Mắc định hiển thị Màn hình home, hiển thị bottom tabs 
