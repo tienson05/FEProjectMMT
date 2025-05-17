@@ -1,26 +1,48 @@
-// AuthScreen.tsx
 import React, { useState } from 'react';
 import { ActivityIndicator, Alert, StyleSheet, Text, View } from 'react-native';
 import LoginForm from './LoginForm';
 
 interface AuthScreenProps {
-    onLoginSuccess: () => void;
+    onLoginSuccess: (role: 'admin' | 'casher') => void;
 }
 
 const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess }) => {
     const [loading, setLoading] = useState(false);
 
-    const handleLogin = (email: string, password: string) => {
+    const handleLogin = async (email: string, password: string) => {
         setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-            if (email === 'user@example.com' && password === '123456') {
-                Alert.alert('Thành công', 'Đăng nhập thành công!');
-                onLoginSuccess(); // báo app đã đăng nhập
-            } else {
-                Alert.alert('Lỗi', 'Email hoặc mật khẩu không đúng');
+
+        try {
+            // Gọi API backend để đăng nhập, ví dụ POST /api/login
+            console.log("dda vao")
+            const response = await fetch('http://192.168.1.202:3000/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+            console.log(response)
+            if (!response.ok) {
+                // Nếu lỗi, hiện thông báo
+                Alert.alert('Đăng nhập thất bại', 'Email hoặc mật khẩu không đúng.');
+                setLoading(false);
+                return;
             }
-        }, 1500);
+
+            // Giả sử API trả về JSON có dạng: { role: 'admin' | 'casher', token: string, ... }
+            const data = await response.json();
+
+            // Lấy role từ dữ liệu trả về
+            const role = data.role == 1 ? 'admin' : 'casher';
+
+            // Gọi callback thông báo đăng nhập thành công với role
+            onLoginSuccess(role);
+        } catch (error) {
+            Alert.alert('Lỗi kết nối', 'Không thể kết nối đến máy chủ.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -50,4 +72,3 @@ const styles = StyleSheet.create({
 });
 
 export default AuthScreen;
-

@@ -6,6 +6,8 @@ import { Animated, Dimensions, StyleSheet } from 'react-native';
 import BillScreen from '../Bills/BillScreen';
 import CartScreen from '../Cart/CartScreen';
 import HomeScreen from '../Home/HomeScreen';
+import ManageMenuScreen from '../ManageMenu/ManageMenuScreen';
+import ManageUsersScreen from '../ManageUsers/ManageUsersScreen';
 import MenuScreen from '../Menu/MenuScreen';
 import OrderScreen from '../Order/OrderScreen';
 
@@ -14,7 +16,11 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const TAB_WIDTH = SCREEN_WIDTH / 5; // 5 tab
 
-export default function MyTabs() {
+interface MyTabsProps {
+    userRole: 'admin' | 'casher' | null;
+}
+
+export default function MyTabs({ userRole }: MyTabsProps) {
     const translateX = useRef(new Animated.Value(0)).current;
 
     // Hàm chạy animation underline trượt
@@ -64,11 +70,14 @@ export default function MyTabs() {
                     },
                 }}
             >
-                <Tab.Screen name="Home" component={HomeScreen} />
-                <Tab.Screen name="Menu" component={MenuScreen} />
-                <Tab.Screen name="Order" component={OrderScreen} />
-                <Tab.Screen name="Bill" component={BillScreen} />
-                <Tab.Screen name="Cart" component={CartScreen} />
+                {userRole === 'casher' && <Tab.Screen name="Home" component={HomeScreen} />}
+                {userRole === 'casher' && <Tab.Screen name="Menu" component={MenuScreen} />}
+                {userRole === 'casher' && <Tab.Screen name="Order" component={OrderScreen} />}
+                {userRole === 'casher' && <Tab.Screen name="Cart" component={CartScreen} />}
+
+                {userRole === 'admin' && <Tab.Screen name="Bill" component={BillScreen} />}
+                {userRole === 'admin' && <Tab.Screen name="ManageUsersScreen" component={ManageUsersScreen} />}
+                {userRole === 'admin' && <Tab.Screen name="ManageMenuScreen" component={ManageMenuScreen} />}
             </Tab.Navigator>
 
             {/* Underline indicator */}
