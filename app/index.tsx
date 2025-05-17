@@ -5,6 +5,8 @@ import MenuScreen from '../components/Menu/MenuScreen';
 import OrderScreen from '../components/Order/OrderScreen';
 import CartScreen from '../components/Cart/CartScreen';
 import BillScreen from '../components/Bills/BillScreen';
+import ManageMenuScreen from '../components/ManageMenu/ManageMenuScreen';
+
 
 
 
@@ -13,7 +15,7 @@ import BillScreen from '../components/Bills/BillScreen';
 export default function Index() {
   return (
     <View style={styles.container}>
-      < BillScreen/>
+      < MenuScreen/>
     </View>
   );
 }
