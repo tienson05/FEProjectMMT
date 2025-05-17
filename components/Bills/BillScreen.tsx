@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import {
-    KeyboardAvoidingView,
-    Platform,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    View,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  View,
 } from 'react-native';
 import Colors from '../../constants/Colors';
 import WelcomeBanner from '../Home/WelcomeBanner';

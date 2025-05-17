@@ -45,7 +45,7 @@ const MenuScreen = () => {
 
   return (
     <ScrollView style={styles.container}>
-      <WelcomeBanner   />
+      <WelcomeBanner />
 
       {/* Tiêu đề Menu ở giữa dưới banner */}
       <View style={styles.menuTitleContainer}>

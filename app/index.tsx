@@ -1,22 +1,15 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import HomeScreen from '../components/Home/HomeScreen';
-import MenuScreen from '../components/Menu/MenuScreen';
-import OrderScreen from '../components/Order/OrderScreen';
-import CartScreen from '../components/Cart/CartScreen';
-import BillScreen from '../components/Bills/BillScreen';
-import ManageMenuScreen from '../components/ManageMenu/ManageMenuScreen';
+import React, { useState } from 'react';
+import { StyleSheet } from 'react-native';
 
 
+import AuthScreen from '@/components/Auth/AuthScreen';
+import MyTabs from '@/components/common/Header';
 
+export default function HomePage() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-
-
-export default function Index() {
   return (
-    <View style={styles.container}>
-      < MenuScreen/>
-    </View>
+    isLoggedIn ? <MyTabs /> : <AuthScreen onLoginSuccess={() => setIsLoggedIn(true)} />
   );
 }
 
