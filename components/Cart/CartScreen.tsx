@@ -15,6 +15,14 @@ interface CartItem {
 const initialCart: CartItem[] = [
   { id: '1', name: 'Cà phê sữa', price: 35000, quantity: 2 },
   { id: '2', name: 'Trà đào', price: 40000, quantity: 1 },
+  { id: '3', name: 'Sinh tố xoài', price: 45000, quantity: 1 },
+  { id: '4', name: 'Nước cam', price: 30000, quantity: 2 },
+  { id: '5', name: 'Sữa chua đánh đá', price: 32000, quantity: 1 },
+  { id: '6', name: 'Matcha đá xay', price: 48000, quantity: 1 },
+  { id: '7', name: 'Cà phê đen', price: 30000, quantity: 2 },
+  { id: '8', name: 'Trà sữa trân châu', price: 50000, quantity: 1 },
+  { id: '9', name: 'Trà đào cam sả', price: 49000, quantity: 1 },
+  { id: '10', name: 'Cacao nóng', price: 45000, quantity: 1 },
 ];
 
 const CartScreen: React.FC = () => {
@@ -47,6 +55,7 @@ const CartScreen: React.FC = () => {
 
         <CartSummary items={cartItems} />
       </ScrollView>
+
     </SafeAreaView>
   );
 };

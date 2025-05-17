@@ -30,39 +30,34 @@ const ProductOrderScreen = () => {
       <View style={styles.mainContent}>
         <WelcomeBanner />
 
-        <View style={styles.rowContainer}>
-          <View style={styles.emptySpace} />
+        <View style={styles.imageContainer}>
+          <Image source={{ uri: dishData.image }} style={styles.image} resizeMode="cover" />
+        </View>
 
-          <View style={styles.imageContainer}>
-            <Image source={{ uri: dishData.image }} style={styles.image} resizeMode="contain" />
-          </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.name}>{dishData.name}</Text>
+          <Text style={styles.price}>{dishData.price.toLocaleString()}đ</Text>
+          <Text style={styles.description}>{dishData.description}</Text>
 
-          <View style={styles.separator} />
+          <View style={styles.quantityContainer}>
+            <TouchableOpacity style={styles.qtyBtn} onPress={decrement}>
+              <Text style={styles.qtyBtnText}>-</Text>
+            </TouchableOpacity>
 
-          <View style={styles.infoContainer}>
-            <Text style={styles.name}>{dishData.name}</Text>
-            <Text style={styles.price}>{dishData.price.toLocaleString()}đ</Text>
-            <Text style={styles.description}>{dishData.description}</Text>
+            <Text style={styles.qtyText}>{quantity}</Text>
 
-            <View style={styles.quantityContainer}>
-              <TouchableOpacity style={styles.qtyBtn} onPress={decrement}>
-                <Text style={styles.qtyBtnText}>-</Text>
-              </TouchableOpacity>
-
-              <Text style={styles.qtyText}>{quantity}</Text>
-
-              <TouchableOpacity style={styles.qtyBtn} onPress={increment}>
-                <Text style={styles.qtyBtnText}>+</Text>
-              </TouchableOpacity>
-            </View>
-
-            <TouchableOpacity style={styles.addToCartBtn} onPress={addToCart}>
-              <Text style={styles.addToCartText}>Thêm vào giỏ</Text>
+            <TouchableOpacity style={styles.qtyBtn} onPress={increment}>
+              <Text style={styles.qtyBtnText}>+</Text>
             </TouchableOpacity>
           </View>
 
-          <View style={styles.emptySpace} />
+          <TouchableOpacity style={styles.addToCartBtn} onPress={addToCart}>
+            <Text style={styles.addToCartText}>Thêm vào giỏ</Text>
+          </TouchableOpacity>
         </View>
+
+
+        {/* InfoSection luôn ở dưới cùng */}
       </View>
     </ScrollView>
   );
@@ -91,28 +86,25 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   imageContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 10,
+    width: '100%',
+    paddingHorizontal: 16,
+    marginTop: 20,
+    alignItems: 'center',
   },
   image: {
     width: '100%',
-    height: 300,
-    borderRadius: 12,
+    height: 250,
+    borderRadius: 16,
     borderWidth: 2,
-    borderColor: Colors.primary, // viền cam nâu
-  },
-  separator: {
-    width: 1,
-    backgroundColor: Colors.primary, // màu cam nâu cho đường kẻ
-    height: 300,
-    marginHorizontal: 5,
+    borderColor: Colors.primary,
   },
   infoContainer: {
-    flex: 1,
-    paddingLeft: 15,
-    justifyContent: 'flex-start',
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    marginBottom: 30, // Thêm dòng này để đẩy cách InfoSection ra
+
   },
+
   name: {
     fontSize: 32,
     fontWeight: 'bold',

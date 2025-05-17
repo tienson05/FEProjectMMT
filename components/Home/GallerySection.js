@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   image: {
-    width: screenWidth * 0.3,
-    height: screenWidth * 0.2,
+    width: screenWidth * 0.8,
+    height: screenWidth * 0.8,
     borderRadius: 10,
     marginRight: 15,
   },
