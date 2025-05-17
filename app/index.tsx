@@ -1,17 +1,11 @@
-// app/index.tsx
+import AuthScreen from '@/components/Auth/AuthScreen';
 import MyTabs from '@/components/common/Header';
-import { StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
 
 export default function HomePage() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
     return (
-        <View style={styles.container}>
-            <MyTabs />
-        </View>
+        isLoggedIn ? <MyTabs /> : <AuthScreen onLoginSuccess={() => setIsLoggedIn(true)} />
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-});
