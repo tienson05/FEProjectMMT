@@ -3,29 +3,36 @@ import { FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Colors from '../../constants/Colors';
 
 interface Bill {
-  id: string;
-  createdBy: string;
-  createdAt: string;
+  id: number;
+  phoneNumberCus: string;
+  totalPrice: number;
+  createdByEmployID: number;
+  created_at: string,
+  user: {
+    name: string;
+  }
 }
 
 interface Props {
   bills: Bill[];
-  onSelect: (billId: string) => void;
+  onSelect: (billId: number) => void;
 }
 
 const BillList: React.FC<Props> = ({ bills, onSelect }) => {
   const renderItem = ({ item }: { item: Bill }) => (
     <TouchableOpacity style={styles.item} onPress={() => onSelect(item.id)}>
       <Text style={styles.id}>Mã đơn: {item.id}</Text>
-      <Text style={styles.text}>Thời gian: {item.createdAt}</Text>
-      <Text style={styles.text}>Người tạo: {item.createdBy}</Text>
+      <Text style={styles.text}>Tổng tiền: {item.totalPrice}</Text>
+      <Text style={styles.text}>Phone guest: {item.phoneNumberCus}</Text>
+      <Text style={styles.text}>Thời gian: {item.created_at}</Text>
+      <Text style={styles.text}>Người tạo: {item.user.name}</Text>
     </TouchableOpacity>
   );
 
   return (
     <FlatList
       data={bills}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item.id.toString()}
       renderItem={renderItem}
       contentContainerStyle={styles.list}
     />

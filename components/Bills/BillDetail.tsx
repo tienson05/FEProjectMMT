@@ -3,29 +3,43 @@ import { StyleSheet, Text, View } from 'react-native';
 import Colors from '../../constants/Colors';
 
 interface BillItem {
-  name: string;
-  quantity: number;
-  price: number;
+  id: number,
+  phoneNumberCus: string;
+  totalPrice: number;
+  createdByEmployID: number;
+  created_at: string;
+  items: [{
+    id: number,
+    invoice_id: number,
+    product_id: number,
+    quantity: number;
+    price: number,
+    product_name: string,
+  }],
+  employee: {
+    id: number,
+    name: string,
+  }
 }
 
 interface Props {
-  billId: string;
-  items: BillItem[];
+  billId: number;
+  items: BillItem | null;
 }
 
+
 const BillDetail: React.FC<Props> = ({ billId, items }) => {
-  const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Chi tiết đơn hàng #{billId}</Text>
-      {items.map((item, index) => (
-        <View key={index} style={styles.itemRow}>
-          <Text style={styles.itemText}>{item.name} x{item.quantity}</Text>
-          <Text style={styles.itemText}>{(item.price * item.quantity).toLocaleString()}đ</Text>
+      {items?.items.map((product) => (
+        <View key={product.id} style={styles.itemRow}>
+          <Text style={styles.itemText}>{product.product_name} x {product.quantity}</Text>
+          <Text style={styles.itemText}>{(product.price * product.quantity).toLocaleString()}đ</Text>
         </View>
       ))}
-      <Text style={styles.total}>Tổng tiền: {total.toLocaleString()}đ</Text>
+      <Text style={styles.total}>Tổng tiền: {items?.totalPrice}đ</Text>
     </View>
   );
 };

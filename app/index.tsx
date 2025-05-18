@@ -6,8 +6,8 @@ import AuthScreen from '@/components/Auth/AuthScreen';
 import MyTabs from '@/components/common/Header';
 
 export default function HomePage() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [role, setRole] = useState<'admin' | 'casher' | null>(null);
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
+    const [role, setRole] = useState<'admin' | 'casher' | null>('admin');
 
     const handleLoginSuccess = (userRole: 'admin' | 'casher') => {
         setRole(userRole);

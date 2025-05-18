@@ -10,11 +10,10 @@ import ManageMenuScreen from '../ManageMenu/ManageMenuScreen';
 import ManageUsersScreen from '../ManageUsers/ManageUsersScreen';
 import MenuScreen from '../Menu/MenuScreen';
 import OrderScreen from '../Order/OrderScreen';
+import ProfileScreen from '../Profile/ProfileScreen';
 
 const Tab = createBottomTabNavigator();
 const SCREEN_WIDTH = Dimensions.get('window').width;
-
-const TAB_WIDTH = SCREEN_WIDTH / 5; // 5 tab
 
 interface MyTabsProps {
     userRole: 'admin' | 'casher' | null;
@@ -26,10 +25,37 @@ export default function MyTabs({ userRole }: MyTabsProps) {
     // Hàm chạy animation underline trượt
     const animateIndicator = (index: number) => {
         Animated.spring(translateX, {
-            toValue: index * TAB_WIDTH,
+            toValue: index * (SCREEN_WIDTH / 5), // animate theo thứ tự hiển thị tab
             useNativeDriver: true,
         }).start();
     };
+
+    // Danh sách tab tùy theo role
+    const getTabs = () => {
+        const tabs = [{ name: 'Home', component: HomeScreen }];
+
+        if (userRole === 'casher') {
+            tabs.push(
+                { name: 'Menu', component: MenuScreen },
+                { name: 'Order', component: OrderScreen },
+                { name: 'Cart', component: CartScreen },
+            );
+        }
+
+        if (userRole === 'admin') {
+            tabs.push(
+                { name: 'Bill', component: BillScreen },
+                { name: 'ManageUsers', component: ManageUsersScreen },
+                { name: 'ManageMenu', component: ManageMenuScreen },
+            );
+        }
+
+        tabs.push({ name: 'Profile', component: ProfileScreen });
+
+        return tabs;
+    };
+
+    const tabs = getTabs();
 
     return (
         <>
@@ -47,37 +73,28 @@ export default function MyTabs({ userRole }: MyTabsProps) {
                             Order: { focused: 'receipt', unfocused: 'receipt-outline' },
                             Bill: { focused: 'card', unfocused: 'card-outline' },
                             Cart: { focused: 'cart', unfocused: 'cart-outline' },
+                            ManageMenu: { focused: 'restaurant', unfocused: 'restaurant-outline' },
+                            ManageUsers: { focused: 'person', unfocused: 'person-outline' },
+                            Profile: { focused: 'person-circle', unfocused: 'person-circle-outline' },
                         };
 
-                        const iconName = focused
-                            ? icons[route.name]?.focused
-                            : icons[route.name]?.unfocused;
-
-                        // TypeScript vẫn có thể nghi ngờ iconName là string | undefined
-                        // Nên cần kiểm tra hoặc ép kiểu
-                        if (!iconName) return null;
+                        const icon = icons[route.name];
+                        const iconName = icon ? (focused ? icon.focused : icon.unfocused) : 'help-circle-outline';
 
                         return <Ionicons name={iconName as any} size={size} color={color} />;
                     },
                 })}
-                // Khi tab thay đổi, chạy animation
-                // index tương ứng với vị trí tab
-                // Dùng onStateChange hoặc onTabPress có thể dùng, đây dùng onTabPress
                 screenListeners={{
                     tabPress: e => {
-                        const index = ['Home', 'Menu', 'Order', 'Bill', 'Cart'].indexOf(e.target?.split('-')[0] ?? '');
+                        const routeName = e.target?.split('-')[0];
+                        const index = tabs.findIndex(tab => tab.name === routeName);
                         if (index >= 0) animateIndicator(index);
                     },
                 }}
             >
-                {userRole === 'casher' && <Tab.Screen name="Home" component={HomeScreen} />}
-                {userRole === 'casher' && <Tab.Screen name="Menu" component={MenuScreen} />}
-                {userRole === 'casher' && <Tab.Screen name="Order" component={OrderScreen} />}
-                {userRole === 'casher' && <Tab.Screen name="Cart" component={CartScreen} />}
-
-                {userRole === 'admin' && <Tab.Screen name="Bill" component={BillScreen} />}
-                {userRole === 'admin' && <Tab.Screen name="ManageUsersScreen" component={ManageUsersScreen} />}
-                {userRole === 'admin' && <Tab.Screen name="ManageMenuScreen" component={ManageMenuScreen} />}
+                {tabs.map(tab => (
+                    <Tab.Screen key={tab.name} name={tab.name} component={tab.component} />
+                ))}
             </Tab.Navigator>
 
             {/* Underline indicator */}
@@ -85,7 +102,7 @@ export default function MyTabs({ userRole }: MyTabsProps) {
                 style={[
                     styles.indicator,
                     {
-                        width: TAB_WIDTH,
+                        width: SCREEN_WIDTH / 5,
                         transform: [{ translateX }],
                     },
                 ]}
@@ -102,13 +119,12 @@ const styles = StyleSheet.create({
         height: 60,
         paddingBottom: 8,
         elevation: 5,
-        color: 'white'
     },
     indicator: {
         height: 3,
         backgroundColor: '#FF6347',
         position: 'absolute',
-        bottom: 58, // ngay trên tab bar
+        bottom: 58,
         left: 0,
         borderRadius: 2,
     },
