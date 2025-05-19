@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Colors from '../../constants/Colors';
+import { CartContext } from '../Cart/CartContext';
 import WelcomeBanner from '../Home/WelcomeBanner';
-
 const dishData = {
   id: '5326',
   name: 'Hồng Mơ',
@@ -11,15 +11,30 @@ const dishData = {
   image: 'https://congcaphe.com/wp-content/uploads/2023/04/hong-mo-500x500.jpg',
 };
 
-const ProductOrderScreen = () => {
-  const [quantity, setQuantity] = useState(1);
 
+const ProductOrderScreen = ({ route, navigation }: any) => {
+  const [quantity, setQuantity] = useState(1);
+  const { dish } = route.params || {};
   const increment = () => setQuantity(q => q + 1);
   const decrement = () => setQuantity(q => (q > 1 ? q - 1 : 1));
-
+  const { addItemToCart } = useContext(CartContext);
   const addToCart = () => {
-    Alert.alert('Thêm vào giỏ', `Bạn đã thêm ${quantity} x ${dishData.name} vào giỏ hàng.`);
+    addItemToCart(dish, quantity);
+
+    Alert.alert(
+      'Thêm vào giỏ',
+      `Bạn đã thêm ${quantity} x ${dish.name} vào giỏ hàng.`,
+      [
+        {
+          text: 'OK',
+          onPress: () => navigation.navigate('MainTabs', {
+            screen: 'Menu',
+          })
+        },
+      ]
+    );
   };
+
 
   return (
     <ScrollView
@@ -31,13 +46,13 @@ const ProductOrderScreen = () => {
         <WelcomeBanner />
 
         <View style={styles.imageContainer}>
-          <Image source={{ uri: dishData.image }} style={styles.image} resizeMode="cover" />
+          <Image source={{ uri: dish.image_url }} style={styles.image} resizeMode="cover" />
         </View>
 
         <View style={styles.infoContainer}>
-          <Text style={styles.name}>{dishData.name}</Text>
-          <Text style={styles.price}>{dishData.price.toLocaleString()}đ</Text>
-          <Text style={styles.description}>{dishData.description}</Text>
+          <Text style={styles.name}>{dish.name}</Text>
+          <Text style={styles.price}>{dish.price.toLocaleString()}đ</Text>
+          <Text style={styles.description}>{dish.description}</Text>
 
           <View style={styles.quantityContainer}>
             <TouchableOpacity style={styles.qtyBtn} onPress={decrement}>

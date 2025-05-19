@@ -1,67 +1,62 @@
-import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import API_URL from '@/config';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Colors from '../../constants/Colors';
 import WelcomeBanner from '../Home/WelcomeBanner';
 import CategoryList from './CategoryList';
 
-const generateSampleData = () => {
-  const categories = [
-    {
-      id: '1',
-      name: 'Cà Phê',
-      dishes: Array.from({ length: 10 }).map((_, i) => ({
-        id: `cf${i + 1}`,
-        name: `Cà Phê Đặc Biệt ${i + 1}`,
-        price: `${29 + i}000đ`,
-        image: 'https://congcaphe.com/wp-content/uploads/2023/04/cfden-247x296.jpg',
-      })),
-    },
-    {
-      id: '2',
-      name: 'Sinh Tố',
-      dishes: Array.from({ length: 10 }).map((_, i) => ({
-        id: `st${i + 1}`,
-        name: `Sinh Tố Thơm Ngon ${i + 1}`,
-        price: `${35 + i}000đ`,
-        image: 'https://congcaphe.com/wp-content/uploads/2023/04/stbo-247x296.jpg',
-      })),
-    },
-    {
-      id: '3',
-      name: 'Combo',
-      dishes: Array.from({ length: 10 }).map((_, i) => ({
-        id: `combo${i + 1}`,
-        name: `Combo Tiết Kiệm ${i + 1}`,
-        price: `${59 + i}000đ`,
-        image: 'https://congcaphe.com/wp-content/uploads/2023/04/cfden-247x296.jpg',
-      })),
-    },
-  ];
-  return categories;
-};
-
 const MenuScreen = () => {
-  const sampleData = generateSampleData();
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true); // loading state
+  const [error, setError] = useState<string | null>(null);     // error state
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${API_URL}/api/category`);
+        if (!response.ok) {
+          throw new Error('Lỗi khi lấy dữ liệu từ server');
+        }
+        const data = await response.json();
+        setCategories(data); // data là mảng category có chứa các món
+      } catch (err) {
+        if (err instanceof Error) {
+          console.error('Lỗi:', err.message);
+          setError(err.message || 'Lỗi không xác định');
+        } else {
+          console.error('Lỗi không xác định:', err);
+        }
+
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <ScrollView style={styles.container}>
       <WelcomeBanner />
 
-      {/* Tiêu đề Menu ở giữa dưới banner */}
       <View style={styles.menuTitleContainer}>
         <Text style={styles.menuTitle}>Menu</Text>
       </View>
 
-      {/* Phần khuyến mãi đặt phía trên menu */}
       <View style={styles.promoContainer}>
         <Text style={styles.promoText}>- Giảm 10% cho đơn hàng trên 100k</Text>
         <Text style={styles.promoText}>- Mua 1 tặng 1 cho món sinh tố</Text>
         <Text style={styles.promoText}>- Tặng kèm bánh quy cho cà phê đặc biệt</Text>
       </View>
 
-      {/* Danh sách menu theo danh mục */}
-      <CategoryList categories={sampleData} />
-
+      {/* Hiển thị trạng thái loading, error hoặc danh mục */}
+      {loading ? (
+        <ActivityIndicator size="large" color={Colors.primary} />
+      ) : error ? (
+        <Text style={{ color: 'red', textAlign: 'center' }}>{error}</Text>
+      ) : (
+        <CategoryList categories={categories} />
+      )}
     </ScrollView>
   );
 };

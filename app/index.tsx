@@ -1,22 +1,32 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 
-
 import AuthScreen from '@/components/Auth/AuthScreen';
-import MyTabs from '@/components/common/Header';
+import { CartProvider } from '@/components/Cart/CartContext';
+import { UserProvider, useUser } from '@/components/Profile/UserContext';
+import AppNavigator from '../components/navigation/AppNavigator';
 
 export default function HomePage() {
-    const [isLoggedIn, setIsLoggedIn] = useState(true);
-    const [role, setRole] = useState<'admin' | 'casher' | null>('admin');
+    return (
+        <UserProvider>
+            <CartProvider>
+                <MainApp />
+            </CartProvider>
+        </UserProvider>
+    );
+}
 
-    const handleLoginSuccess = (userRole: 'admin' | 'casher') => {
-        setRole(userRole);
-        setIsLoggedIn(true);
+function MainApp() {
+    const { user, login } = useUser();
+
+    const handleLoginSuccess = (userInfo: { id: string; role: 'admin' | 'casher'; name: string }) => {
+        login(userInfo); // từ UserContext
     };
 
-    return (
-        isLoggedIn && role ? <MyTabs userRole={role} /> : <AuthScreen onLoginSuccess={handleLoginSuccess} />
-    );
+
+    return user
+        ? <AppNavigator userRole={user.role} />
+        : <AuthScreen onLoginSuccess={handleLoginSuccess} />;
 }
 
 const styles = StyleSheet.create({

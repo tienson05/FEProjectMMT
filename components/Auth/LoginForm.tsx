@@ -1,6 +1,7 @@
 // LoginForm.tsx
+import Colors from '@/constants/Colors';
 import React, { useState } from 'react';
-import { Alert, Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 interface LoginFormProps {
     onLogin: (email: string, password: string) => void;
@@ -26,6 +27,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
                 value={email}
                 onChangeText={setEmail}
                 placeholder="Nhập email"
+                placeholderTextColor={Colors.dark}
                 keyboardType="email-address"
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -37,31 +39,59 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
                 value={password}
                 onChangeText={setPassword}
                 placeholder="Nhập mật khẩu"
+                placeholderTextColor={Colors.dark}
                 secureTextEntry
                 autoCapitalize="none"
             />
 
-            <Button title="Đăng nhập" onPress={handleSubmit} />
+            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+                <Text style={styles.buttonText}>Đăng nhập</Text>
+            </TouchableOpacity>
         </View>
     );
+
 };
 
 const styles = StyleSheet.create({
     container: {
-        marginHorizontal: 20,
-        marginTop: 50,
+        paddingLeft: 20,
+        paddingRight: 20,
+        backgroundColor: Colors.secondary,
+        justifyContent: 'center',
     },
     label: {
-        fontWeight: '600',
-        marginBottom: 8,
+        fontSize: 14,
+        color: Colors.dark,
+        marginBottom: 6,
+        marginTop: 12,
+        fontWeight: '500',
     },
     input: {
+        height: 48,
         borderWidth: 1,
-        borderColor: '#ccc',
+        borderColor: Colors.accent,
+        borderRadius: 8,
         paddingHorizontal: 12,
-        paddingVertical: 8,
-        borderRadius: 5,
-        marginBottom: 16,
+        backgroundColor: Colors.white,
+        color: Colors.black,
+        fontSize: 15,
+    },
+    button: {
+        marginTop: 24,
+        backgroundColor: Colors.primary,
+        paddingVertical: 14,
+        borderRadius: 8,
+        alignItems: 'center',
+        shadowColor: Colors.black,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+        elevation: 3,
+    },
+    buttonText: {
+        color: Colors.white,
+        fontWeight: 'bold',
+        fontSize: 16,
     },
 });
 

@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React, { useRef } from 'react';
+import React, { ComponentType, useRef } from 'react';
 import { Animated, Dimensions, StyleSheet } from 'react-native';
 
 import BillScreen from '../Bills/BillScreen';
@@ -9,7 +9,6 @@ import HomeScreen from '../Home/HomeScreen';
 import ManageMenuScreen from '../ManageMenu/ManageMenuScreen';
 import ManageUsersScreen from '../ManageUsers/ManageUsersScreen';
 import MenuScreen from '../Menu/MenuScreen';
-import OrderScreen from '../Order/OrderScreen';
 import ProfileScreen from '../Profile/ProfileScreen';
 
 const Tab = createBottomTabNavigator();
@@ -22,40 +21,42 @@ interface MyTabsProps {
 export default function MyTabs({ userRole }: MyTabsProps) {
     const translateX = useRef(new Animated.Value(0)).current;
 
+    const tabWidth = SCREEN_WIDTH / 5; // Dynamic tab width based on number of tabs
+
     // Hàm chạy animation underline trượt
     const animateIndicator = (index: number) => {
         Animated.spring(translateX, {
-            toValue: index * (SCREEN_WIDTH / 5), // animate theo thứ tự hiển thị tab
+            toValue: index * tabWidth,
             useNativeDriver: true,
+            speed: 12,
+            bounciness: 8,
         }).start();
     };
-
     // Danh sách tab tùy theo role
-    const getTabs = () => {
+    const getTabs = (): { name: string; component: ComponentType<any> }[] => {
         const tabs = [{ name: 'Home', component: HomeScreen }];
 
         if (userRole === 'casher') {
             tabs.push(
                 { name: 'Menu', component: MenuScreen },
-                { name: 'Order', component: OrderScreen },
                 { name: 'Cart', component: CartScreen },
             );
         }
 
         if (userRole === 'admin') {
             tabs.push(
-                { name: 'Bill', component: BillScreen },
                 { name: 'ManageUsers', component: ManageUsersScreen },
                 { name: 'ManageMenu', component: ManageMenuScreen },
             );
         }
-
+        tabs.push({ name: 'Bill', component: BillScreen });
         tabs.push({ name: 'Profile', component: ProfileScreen });
 
         return tabs;
     };
 
     const tabs = getTabs();
+
 
     return (
         <>
@@ -70,7 +71,6 @@ export default function MyTabs({ userRole }: MyTabsProps) {
                         const icons: Record<string, { focused: string; unfocused: string }> = {
                             Home: { focused: 'home', unfocused: 'home-outline' },
                             Menu: { focused: 'restaurant', unfocused: 'restaurant-outline' },
-                            Order: { focused: 'receipt', unfocused: 'receipt-outline' },
                             Bill: { focused: 'card', unfocused: 'card-outline' },
                             Cart: { focused: 'cart', unfocused: 'cart-outline' },
                             ManageMenu: { focused: 'restaurant', unfocused: 'restaurant-outline' },
@@ -81,18 +81,20 @@ export default function MyTabs({ userRole }: MyTabsProps) {
                         const icon = icons[route.name];
                         const iconName = icon ? (focused ? icon.focused : icon.unfocused) : 'help-circle-outline';
 
+
                         return <Ionicons name={iconName as any} size={size} color={color} />;
+
                     },
                 })}
                 screenListeners={{
-                    tabPress: e => {
+                    tabPress: (e) => {
                         const routeName = e.target?.split('-')[0];
-                        const index = tabs.findIndex(tab => tab.name === routeName);
+                        const index = tabs.findIndex((tab) => tab.name === routeName);
                         if (index >= 0) animateIndicator(index);
                     },
                 }}
             >
-                {tabs.map(tab => (
+                {tabs.map((tab) => (
                     <Tab.Screen key={tab.name} name={tab.name} component={tab.component} />
                 ))}
             </Tab.Navigator>
@@ -102,7 +104,7 @@ export default function MyTabs({ userRole }: MyTabsProps) {
                 style={[
                     styles.indicator,
                     {
-                        width: SCREEN_WIDTH / 5,
+                        width: tabWidth,
                         transform: [{ translateX }],
                     },
                 ]}
@@ -117,14 +119,21 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderTopColor: '#ddd',
         height: 60,
-        paddingBottom: 8,
+        paddingBottom: 5, // Giảm paddingBottom để căn chỉnh tốt hơn
+        paddingTop: 5,
         elevation: 5,
+        justifyContent: 'center',
+    },
+    iconContainer: {
+        flex: 1,
+        // justifyContent: 'center',
+        // alignItems: 'center', 
     },
     indicator: {
         height: 3,
         backgroundColor: '#FF6347',
         position: 'absolute',
-        bottom: 58,
+        bottom: 60,
         left: 0,
         borderRadius: 2,
     },

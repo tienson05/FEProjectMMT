@@ -1,76 +1,149 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import API_URL from '@/config';
+import { useRoute } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import Colors from '../../constants/Colors';
+import WelcomeBanner from '../Home/WelcomeBanner';
 
 interface BillItem {
-  id: number,
-  phoneNumberCus: string;
-  totalPrice: number;
-  createdByEmployID: number;
+  id: number;
+  total_price: number;
+  created_by: number;
   created_at: string;
-  items: [{
-    id: number,
-    invoice_id: number,
-    product_id: number,
+  note: string;
+  items: {
+    id: number;
+    bill_id: number;
+    product_id: number;
     quantity: number;
-    price: number,
-    product_name: string,
-  }],
+    price: number;
+    product_name: string;
+  }[];
   employee: {
-    id: number,
-    name: string,
-  }
+    id: number;
+    name: string;
+  };
 }
 
-interface Props {
-  billId: number;
-  items: BillItem | null;
-}
+const BillDetailScreen: React.FC = () => {
+  const route = useRoute();
+  const { billId } = route.params as { billId: number };
 
+  const [bill, setBill] = useState<BillItem | null>(null);
+  const [loading, setLoading] = useState(true);
 
-const BillDetail: React.FC<Props> = ({ billId, items }) => {
+  useEffect(() => {
+    const fetchBill = async () => {
+      try {
+        const response = await fetch(`${API_URL}/api/bill/${billId}`);
+        if (!response.ok) throw new Error('Lỗi mạng hoặc dữ liệu');
+        const data = await response.json();
+        setBill(data);
+      } catch (error) {
+        console.error('Lỗi lấy chi tiết hóa đơn:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBill();
+  }, [billId]);
+
+  if (loading) return <ActivityIndicator size="large" color={Colors.primary} />;
+  if (!bill) return <Text>Không tìm thấy hóa đơn</Text>;
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Chi tiết đơn hàng #{billId}</Text>
-      {items?.items.map((product) => (
-        <View key={product.id} style={styles.itemRow}>
-          <Text style={styles.itemText}>{product.product_name} x {product.quantity}</Text>
-          <Text style={styles.itemText}>{(product.price * product.quantity).toLocaleString()}đ</Text>
-        </View>
-      ))}
-      <Text style={styles.total}>Tổng tiền: {items?.totalPrice}đ</Text>
-    </View>
+    <>
+      <WelcomeBanner />
+      <Text style={styles.pageTitle}>CHI TIẾT ĐƠN HÀNG</Text>
+
+      <View style={styles.container}>
+        <Text style={styles.title}>Đơn hàng #{bill.id}</Text>
+
+        {bill.items.map((product) => (
+          <View key={product.id} style={styles.itemRow}>
+            <Text style={styles.itemName}>
+              {product.product_name} <Text style={styles.quantity}>x{product.quantity}</Text>
+            </Text>
+            <Text style={styles.itemPrice}>
+              {(product.price * product.quantity).toLocaleString()}đ
+            </Text>
+          </View>
+        ))}
+
+        <View style={styles.divider} />
+        <Text style={styles.total}>Tổng tiền: {bill.total_price.toLocaleString()}đ</Text>
+        <Text style={styles.meta}>Ngày tạo: {new Date(bill.created_at).toLocaleString('vi-VN')}</Text>
+        <Text style={styles.meta}>Nhân viên: {bill.employee.name}</Text>
+      </View>
+    </>
   );
+
 };
 
 const styles = StyleSheet.create({
+  pageTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 12,
+    marginBottom: 8,
+    color: Colors.accent,
+  },
   container: {
+    margin: 16,
     padding: 16,
+    borderRadius: 10,
     backgroundColor: Colors.secondary,
-    borderTopWidth: 2,
-    borderTopColor: Colors.accent,
+    borderWidth: 1,
+    borderColor: Colors.accent,
   },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: Colors.dark,
+    fontWeight: '600',
     marginBottom: 12,
+    color: Colors.dark,
   },
   itemRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 6,
+    marginBottom: 10,
+    borderBottomWidth: 0.5,
+    borderBottomColor: Colors.accent,
+    paddingBottom: 4,
   },
-  itemText: {
+  itemName: {
+    fontSize: 15,
     color: Colors.black,
   },
+  quantity: {
+    fontSize: 14,
+    color: Colors.primary,
+  },
+  itemPrice: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: Colors.accent,
+  },
+  divider: {
+    borderTopWidth: 1,
+    borderTopColor: Colors.dark,
+    marginVertical: 12,
+  },
   total: {
-    marginTop: 16,
     fontSize: 16,
     fontWeight: 'bold',
-    color: Colors.accent,
+    color: Colors.primary,
+    textAlign: 'right',
+    marginBottom: 6,
+  },
+  meta: {
+    fontSize: 13,
+    color: Colors.dark,
+    textAlign: 'right',
   },
 });
 
-export default BillDetail;
+
+
+export default BillDetailScreen;

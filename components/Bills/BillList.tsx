@@ -1,13 +1,14 @@
+import { useNavigation } from 'expo-router';
 import React from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Colors from '../../constants/Colors';
 
 interface Bill {
   id: number;
-  phoneNumberCus: string;
-  totalPrice: number;
-  createdByEmployID: number;
-  created_at: string,
+  total_price: number;
+  created_by: number;
+  created_at: string;
+  status: string,
   user: {
     name: string;
   }
@@ -18,13 +19,20 @@ interface Props {
   onSelect: (billId: number) => void;
 }
 
-const BillList: React.FC<Props> = ({ bills, onSelect }) => {
+const BillList: React.FC<Props> = ({ bills }) => {
+  const navigation = useNavigation();
+
   const renderItem = ({ item }: { item: Bill }) => (
-    <TouchableOpacity style={styles.item} onPress={() => onSelect(item.id)}>
+    <TouchableOpacity
+      style={styles.item}
+      onPress={() => navigation.navigate('BillDetail', { billId: item.id })}
+    >
       <Text style={styles.id}>Mã đơn: {item.id}</Text>
-      <Text style={styles.text}>Tổng tiền: {item.totalPrice}</Text>
-      <Text style={styles.text}>Phone guest: {item.phoneNumberCus}</Text>
-      <Text style={styles.text}>Thời gian: {item.created_at}</Text>
+      <Text style={styles.text}>Tổng tiền: {item.total_price}</Text>
+      <Text style={styles.text}>Status: {item.status}</Text>
+      <Text style={styles.text}>
+        Thời gian: {new Date(item.created_at).toLocaleString('vi-VN')}
+      </Text>
       <Text style={styles.text}>Người tạo: {item.user.name}</Text>
     </TouchableOpacity>
   );

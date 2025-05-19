@@ -16,10 +16,10 @@ import BillList from './BillList';
 
 interface Bill {
   id: number;
-  phoneNumberCus: string;
-  totalPrice: number;
-  createdByEmployID: number;
+  total_price: number;
+  created_by: number;
   created_at: string;
+  status: string,
   user: {
     name: string;
   }
@@ -27,13 +27,13 @@ interface Bill {
 
 interface BillItem {
   id: number,
-  phoneNumberCus: string;
-  totalPrice: number;
-  createdByEmployID: number;
+  total_price: number;
+  created_by: number;
   created_at: string;
+  note: string,
   items: [{
     id: number,
-    invoice_id: number,
+    bill_id: number,
     product_id: number,
     quantity: number;
     price: number,

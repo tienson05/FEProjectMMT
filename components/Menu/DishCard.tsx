@@ -1,17 +1,17 @@
 import React from 'react';
-import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Colors from '../../constants/Colors';
 
 const screenWidth = Dimensions.get('window').width;
 const cardWidth = screenWidth / 3 - 20; // trừ padding/margin cho vừa 3 ảnh
 
-const DishCard = ({ dish }: any) => {
+const DishCard = ({ dish, onPress }: { dish: any, onPress: () => void }) => {
   return (
-    <View style={styles.card}>
-      <Image source={{ uri: dish.image }} style={styles.image} />
+    <TouchableOpacity style={styles.card} onPress={onPress}>
+      <Image source={{ uri: dish.image_url }} style={styles.image} />
       <Text style={styles.name}>{dish.name}</Text>
       <Text style={styles.price}>{dish.price}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
